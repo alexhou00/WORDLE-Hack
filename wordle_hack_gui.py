@@ -6,7 +6,7 @@ Created on Sat Feb  5 19:09:39 2022
 """
 
 def App():
-    global word, col_seq, n, english_words, recom_btns, cur, possible_words, black_letters
+    global word, col_seq, n, english_words, recom_btns, cur, possible_words, black_letters, colors
     global yellow_letters
     
     possible_words = [i for i in english_words if len(i)==n]
@@ -36,7 +36,7 @@ def App():
             contains.append(word[I]+str(I))
     contains = {(j[0],j[1:]) for j in contains}
     yellow_letters.extend(list(contains))
-    for ch,_ in yellow_letters: keys_[keys_single.index(ch)].config(bg=YELLOW)
+    for ch,_ in yellow_letters: keys_[keys_single.index(ch)].config(bg=colors[1])
     for l in {i for i,j in contains}:
         counts[ord(l)-ord('a')]+=1
     
@@ -45,7 +45,7 @@ def App():
     for I,J in enumerate(col_seq):
         if (J=='g'):
             reg_input += word[I]
-            keys_[keys_single.index(word[I])].config(bg=GREEN)
+            keys_[keys_single.index(word[I])].config(bg=colors[0])
         else:
             reg_input+='.'
     reg = re.compile(reg_input) #example: "l..st" --> least
@@ -266,6 +266,15 @@ def colorBlind(on):
     refresh_screen()
     for idkWhatToName in range(2): 
         colbtns[idkWhatToName].config(bg=colors[idkWhatToName],fg=col_fg[idkWhatToName])
+    for key in keys_:
+        if key["bg"]==GREEN:
+            key.config(bg=ORANGE)
+        elif key["bg"]==ORANGE:
+            key.config(bg=GREEN)
+        elif key["bg"]==BLUE:
+            key.config(bg=YELLOW)
+        elif key["bg"]==YELLOW:
+            key.config(bg=BLUE)
 
 def load_words():
     with open('words_alpha.txt') as word_file:
