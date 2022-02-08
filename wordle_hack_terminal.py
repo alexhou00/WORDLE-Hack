@@ -51,7 +51,7 @@ letterfreq = [2.7414499308958415, 0.6824224148762407, 0.8963940193491644, 0.9182
               0.8235456715667797, 0.15484357331323031]  #percentage*26/100
 
 try: n = int(input("Number of letters:"))
-except: n=5
+except: print("Unknown Error Occured, number set to 5");n=5
 possible_words = [i for i in english_words if len(i)==n]
 possible_words = sorted(possible_words, key=lambda x : rank_words(x), reverse=True)
 black_letters = set()
@@ -68,7 +68,7 @@ while (haveToContinue):
     #get green letters
     reg_input = ''
     while len(reg_input) != n:
-        reg_input = input("Enter green letters with wildcards (regex):").lower()
+        reg_input = input("\nEnter green letters with wildcards (regex):").lower()
     reg = re.compile(reg_input) #example: "l..st" --> least
     for l in [m for m in reg_input if m!='.']:
         counts[ord(l)-ord('a')]+=1
@@ -95,6 +95,7 @@ while (haveToContinue):
     #print results
     numPrint = (input("There are %d possible words, print how many out? (all/num/0):" % len(toPrint))).lower()
     if numPrint=='all': numPrint = len(toPrint)
+    elif numPrint == '': numPrint = 0
     else: numPrint = int(numPrint)
     print("\nPossible words sorted by possibility:")
     cnt = 0
@@ -102,7 +103,7 @@ while (haveToContinue):
         print(word, end=' '*3)
         cnt += 1
         if cnt>=(60-3*(n-1))/5: print();cnt=0
-    haveToContinue = (ask("Continue? ")>1)
+    haveToContinue = (ask("\nContinue? ")>1)
 
 certainty = ask("Did you win? ")
 if certainty>1:
