@@ -179,7 +179,7 @@ def backspace(*event):
     refresh_screen()
 
 def enter(*event):
-    global n, word, col_seq, cur, col_code
+    global n, word, col_seq, cur, col_code, recom_words
     #col_code = ['g','y','b']
     if len(col_seq)==n:
         txt.config(state='normal')
@@ -192,6 +192,8 @@ def enter(*event):
         cur += 2
         txt.config(state='disabled')
         App()
+        try: recom_words = possible_words[:5]
+        except IndexError: pass
         word = ''
         col_seq=''
     else: showinfo("Info","Your must fill all colors")
@@ -231,14 +233,13 @@ def del_col(*event):
     refresh_screen()
 
 def set_n(val):
-    global n, english_words,possible_words,word
+    global n, english_words,possible_words,word,recom_words
     n = int(val)
     txt.config(width=n)
     word = ''
     possible_words = [i for i in english_words if len(i)==n]
     possible_words = sorted(possible_words, key=lambda x : rank_words(x), reverse=True)
-    pw = (sample(possible_words[:20], 20))
-    for i in range(5): recom_btns[i].config(text=pw[i])
+    for i in range(5): recom_btns[i].config(text=recom_words[i])
     
     create_sq()
     
@@ -297,9 +298,9 @@ def ask(question):
     return answer*3-1
 
 def enterText(num):
-    global possible_words, word
+    global possible_words, word, recom_words
     try:
-        word = possible_words[num].upper()
+        word = recom_words[num].upper()
     except IndexError:
         pass
     refresh_screen()
@@ -333,7 +334,6 @@ title.pack()
 scale = tk.Scale(root_, bg=BGCOLOR, troughcolor=BGCOLOR, from_=4, to=11, width=20, sliderlength = 15, length=120,
                          activebackground=BGCOLOR, highlightbackground=BGCOLOR, command=set_n,fg=WHITE)
 scale.set(5)
-#possible_words = (sample(possible_words[:20], 20))
 scale.pack(side='left',padx=5)
 
 win = tk.Frame(root_, bg=BGCOLOR)
@@ -386,10 +386,13 @@ kbFrame = tk.Frame(win, bg=BGCOLOR)
 kbFrame.pack()
 frame1 = tk.Frame(kbFrame, bg=BGCOLOR)
 frame1.pack()
+
+recom_words = (sample(possible_words[:20], 20))
 for i in range(5):
-    recom_btns.append(tk.Button(frame1, text=possible_words[i],bg=GRAY,fg=WHITE,font=("Consolas",9),
+    recom_btns.append(tk.Button(frame1, text=recom_words[i],bg=GRAY,fg=WHITE,font=("Consolas",9),
                                 activebackground=DARKGRAY,activeforeground=WHITE,command=lambda i=i:enterText(i)))
     recom_btns[i].pack(side='left')
+    
 Keyboard(kbFrame).pack()
 transbtn = tk.Button(root_, text='Transl.',fg=WHITE,bg=DARKGRAY, activebackground=DARKGRAY,
                      command=lambda:bopen('https://translate.google.com.tw/?hl=zh-TW&sl=en&tl=zh-TW&text='+word.lower()))
