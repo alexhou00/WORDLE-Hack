@@ -325,6 +325,8 @@ possible_words = sorted(possible_words, key=lambda x : rank_words(x), reverse=Tr
 root = tk.Tk()
 root.title("WORDLE Hack")
 root.resizable(False, False)
+#root.iconphoto(True, tk.PhotoImage(file='./assets/wordle-hack_icon.png'))
+root.wm_iconbitmap('assets/wordle-hack_icon.ico')
 
 root_ = tk.Frame(root,bg=BGCOLOR)
 root_.pack()
