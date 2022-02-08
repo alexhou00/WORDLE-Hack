@@ -9,8 +9,8 @@ def App():
     global word, col_seq, n, english_words, recom_btns, cur, possible_words, black_letters, colors
     global yellow_letters
     
-    possible_words = [i for i in english_words if len(i)==n]
-    possible_words = sorted(possible_words, key=lambda x : rank_words(x), reverse=True)
+    #possible_words = [i for i in english_words if len(i)==n]
+    #possible_words = sorted(possible_words, key=lambda x : rank_words(x), reverse=True)
     
     scale.config(state='disabled')
     #haveToContinue = True
@@ -237,8 +237,8 @@ def set_n(val):
     word = ''
     possible_words = [i for i in english_words if len(i)==n]
     possible_words = sorted(possible_words, key=lambda x : rank_words(x), reverse=True)
-    possible_words = (sample(possible_words[:20], 20))
-    for i in range(5): recom_btns[i].config(text=possible_words[i])
+    pw = (sample(possible_words[:20], 20))
+    for i in range(5): recom_btns[i].config(text=pw[i])
     
     create_sq()
     
@@ -333,7 +333,7 @@ title.pack()
 scale = tk.Scale(root_, bg=BGCOLOR, troughcolor=BGCOLOR, from_=4, to=11, width=20, sliderlength = 15, length=120,
                          activebackground=BGCOLOR, highlightbackground=BGCOLOR, command=set_n,fg=WHITE)
 scale.set(5)
-possible_words = (sample(possible_words[:20], 20))
+#possible_words = (sample(possible_words[:20], 20))
 scale.pack(side='left',padx=5)
 
 win = tk.Frame(root_, bg=BGCOLOR)
